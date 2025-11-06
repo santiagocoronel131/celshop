@@ -31,9 +31,26 @@ class AdminProductController extends Controller
             'image_url' => 'nullable|url',
         ]);
 
-        Product::create($request->all());
-        return redirect()->route('admin.products.index');
+// Crea el producto
+    $product = Product::create($request->except('image_urls'));
+
+    // Guarda las imágenes
+    if ($request->has('image_urls')) {
+        $urls = preg_split('/\\r\\n|\\r|\\n/', $request->image_urls);
+        foreach ($urls as $index => $url) {
+            if (!empty(trim($url))) {
+                $product->images()->create(['image_url' => trim($url)]);
+                // La primera imagen se guarda también como la principal en la tabla de productos
+                if ($index == 0) {
+                    $product->image_url = trim($url);
+                    $product->save();
+                }
+            }
+        }
     }
+
+    return redirect()->route('admin.products.index')->with('success', 'Producto creado exitosamente.');
+}
 
     public function edit($id)
     {
@@ -42,7 +59,7 @@ class AdminProductController extends Controller
         return view('admin.products.edit', compact('product', 'categories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id,Product $product)
     {
         $request->validate([
             'name' => 'required',
@@ -53,10 +70,26 @@ class AdminProductController extends Controller
             'image_url' => 'nullable|url',
         ]);
 
-        $product = Product::findOrFail($id);
-        $product->update($request->all());
-        return redirect()->route('admin.products.index');
+        // Actualiza el producto
+    $product->update($request->except('image_urls'));
+
+    // Borra las imágenes anteriores y guarda las nuevas
+    $product->images()->delete();
+    if ($request->has('image_urls')) {
+        $urls = preg_split('/\\r\\n|\\r|\\n/', $request->image_urls);
+        foreach ($urls as $index => $url) {
+            if (!empty(trim($url))) {
+                $product->images()->create(['image_url' => trim($url)]);
+                if ($index == 0) {
+                    $product->image_url = trim($url);
+                    $product->save();
+                }
+            }
+        }
     }
+
+    return redirect()->route('admin.products.index')->with('success', 'Producto actualizado exitosamente.');
+}
 
     public function destroy($id)
     {

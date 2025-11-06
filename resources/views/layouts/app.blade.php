@@ -11,7 +11,7 @@
     
     <!-- CSS Personalizado para formularios y otros (opcional, pero útil mantenerlo) -->
     <link href="{{ asset('css/form-styles.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/product-styles.css') }}" rel="stylesheet">
     <!-- Directiva para inyectar estilos específicos de cada página -->
     @stack('styles')
 </head>
@@ -114,10 +114,27 @@
         </nav>
 
         <main class="py-4">
-            <!-- AQUÍ VA EL CONTENIDO DE CADA PÁGINA -->
-            <!-- Solo hay UNO de estos, solucionando el problema del duplicado -->
-            @yield('content')
-        </main>
+    <div class="container">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        @if (session('info'))
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ session('info') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+    </div>
+
+    @yield('content')
+</main>
     </div>
 
     <!-- El footer ahora se pega al final de la página -->

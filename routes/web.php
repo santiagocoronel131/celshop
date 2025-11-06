@@ -22,10 +22,14 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
     //Ruta para perfil de usuarios
 Route::get('/perfil', [ProfileController::class, 'index'])->name('profile.index')->middleware('auth'); 
 
-//rutas de carrito
-Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+// Rutas del Carrito
+Route::middleware('auth')->group(function () {
+    Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
+});
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
 // Rutas de Autenticación
 Route::get('/login', [AuthController::class, 'login'])->name('login');

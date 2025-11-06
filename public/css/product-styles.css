@@ -1,0 +1,18 @@
+/* public/css/product-styles.css */
+
+.product-card-img-container {
+    width: 100%;
+    /* Esto crea un contenedor cuadrado. Puedes cambiarlo a 75% para una relación 4:3 */
+    padding-top: 100%; 
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* La magia está aquí: recorta la imagen para que llene el espacio sin deformarla */
+}

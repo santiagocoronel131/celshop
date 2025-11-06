@@ -30,9 +30,10 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="image_url">URL de la Imagen</label>
-                <input type="text" name="image_url" id="image_url" class="form-control">
-            </div>
+    <label for="image_urls">URLs de las Imágenes (una por línea)</label>
+    <textarea name="image_urls" id="image_urls" class="form-control" rows="5">@if(isset($product)){{ $product->images->pluck('image_url')->implode("\n") }}@endif</textarea>
+    <small class="form-text text-muted">Pega aquí las URLs de todas las imágenes que quieras mostrar, una en cada línea. La primera será la imagen principal.</small>
+</div>
             <button type="submit" class="btn btn-primary">Crear Producto</button>
         </form>
     </div>
