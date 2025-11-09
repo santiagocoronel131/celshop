@@ -10,11 +10,37 @@ use App\Models\User;
 
 class ProfileController extends Controller
 {
-    public function orders()
+    public function update(Request $request)
 {
-    $orders = Auth::user()->orders()->with('items.product')->latest()->paginate(10);
-    return view('profile.orders', compact('orders'));
-}
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:255',
+            'province' => 'nullable|string|max:255',
+        ]);
+
+        $user->update($validatedData);
+
+        return redirect()->route('profile.index')->with('success', '¡Perfil actualizado exitosamente!');
+    }
+    public function orders()
+    {
+        /** @var \App\Models\User|null $user */
+        $user = Auth::user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $orders = $user->orders()->with('items.product')->latest()->paginate(10);
+        return view('profile.orders', compact('orders'));
+    }
      public function index()
     {
         // Obtener el usuario autenticado

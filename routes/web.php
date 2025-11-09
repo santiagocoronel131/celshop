@@ -34,6 +34,7 @@ Route::post('/checkout/process', [CheckoutController::class, 'processOrder'])->n
 Route::get('/order/success/{order}', [CheckoutController::class, 'success'])->name('order.success');
 Route::get('/order/ticket/{order}', [CheckoutController::class, 'downloadTicket'])->name('order.ticket');
     Route::get('/my-orders', [ProfileController::class, 'orders'])->name('profile.orders');
+ Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
