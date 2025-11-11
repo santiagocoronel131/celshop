@@ -12,24 +12,20 @@ class ProfileController extends Controller
 {
     public function update(Request $request)
 {
-        /** @var \App\Models\User|null $user */
-        $user = Auth::user();
+    $user = Auth::user();
 
-        if (!$user) {
-            return redirect()->route('login');
-        }
+    $validatedData = $request->validate([
+        'name' => 'required|string|max:255',
+        'address' => 'required|string|max:255',
+        'city' => 'required|string|max:255',
+        'province' => 'required|string|max:255',
+        // Añade aquí más reglas de validación si las necesitas para otros campos
+    ]);
 
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'address' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-        ]);
+    $user->update($validatedData);
 
-        $user->update($validatedData);
-
-        return redirect()->route('profile.index')->with('success', '¡Perfil actualizado exitosamente!');
-    }
+    return redirect()->route('profile.index')->with('success', '¡Perfil actualizado exitosamente!');
+}
     public function orders()
     {
         /** @var \App\Models\User|null $user */

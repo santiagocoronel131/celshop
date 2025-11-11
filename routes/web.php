@@ -24,6 +24,7 @@ Route::get('/perfil', [ProfileController::class, 'index'])->name('profile.index'
 
 // Rutas del Carrito
 Route::middleware('auth')->group(function () {
+    
     Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
@@ -35,6 +36,7 @@ Route::get('/order/success/{order}', [CheckoutController::class, 'success'])->na
 Route::get('/order/ticket/{order}', [CheckoutController::class, 'downloadTicket'])->name('order.ticket');
     Route::get('/my-orders', [ProfileController::class, 'orders'])->name('profile.orders');
  Route::patch('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+ 
 });
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
